@@ -1,0 +1,100 @@
+:root {
+    --crema-claro: #fdfaf5;
+    --arena: #eaddca;
+    --tierra: #a67b5b;
+    --oliva: #708238;
+    --ocre: #c39953;
+    --texto-suave: #4a4a4a;
+    --borde-sutil: rgba(166, 123, 91, 0.2);
+}
+
+.card {
+    background-color: var(--crema-claro);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid var(--borde-sutil);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    border-color: var(--tierra);
+}
+
+.big-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--oliva);
+    line-height: 1;
+}
+
+.label {
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+}
+
+.search-container {
+    background-color: rgba(234, 221, 202, 0.15);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px dashed var(--tierra);
+    margin-bottom: 25px;
+}
+
+.business-card {
+    background-color: transparent;
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid var(--borde-sutil);
+    margin-bottom: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.business-card:hover {
+    background-color: white;
+    border-color: var(--ocre);
+    box-shadow: 0 4px 20px rgba(195, 153, 83, 0.15);
+}
+
+.business-card.selected {
+    border-left: 5px solid var(--oliva);
+    background-color: rgba(112, 130, 56, 0.05);
+}
+
+.stPlotlyChart, .stFoliumChart {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--borde-sutil);
+}
+
+.custom-message {
+    padding: 16px;
+    border-radius: 10px;
+    border-left: 5px solid;
+    margin: 15px 0;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+h1, h2, h3 {
+    font-family: 'Source Sans Pro', sans-serif;
+    margin-bottom: 0.5rem !important;
+}
+
+.stTextInput > div > div > input {
+    border-radius: 8px;
+    border: 1px solid var(--borde-sutil);
+    background-color: var(--crema-claro);
+}
