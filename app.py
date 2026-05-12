@@ -3,6 +3,7 @@ import folium
 import streamlit as st
 import plotly.graph_objects as go
 from streamlit_folium import st_folium
+import os
 
 from db_utils import search_business_types
 from map_utils import add_points, create_base_map, interpretar_feature
@@ -103,7 +104,7 @@ if map_data and map_data.get("last_clicked"):
         st.session_state.last_click = new_point
         st_custom_message(f"Ubicación seleccionada: {lat:.5f}, {lon:.5f}", "success")
 
-        url = "http://127.0.0.1:8000/analizar"
+        URL_BACKEND = st.secrets.get("BACKEND_URL", "https://appubicacion-nube.streamlit.app/analizar")
         payload = {
             "lat": lat,
             "lon": lon,
@@ -112,7 +113,7 @@ if map_data and map_data.get("last_clicked"):
 
         with st.spinner("Consultando datos urbanos (puede tardar unos segundos)..."):
             try:
-                response = requests.post(url, json=payload, timeout=60)
+                response = requests.post(URL_BACKEND, json=payload, timeout=60)
                 if response.status_code == 200:
                     st.session_state.resultado = response.json()
                 else:
