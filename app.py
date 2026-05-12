@@ -104,7 +104,7 @@ if map_data and map_data.get("last_clicked"):
         st.session_state.last_click = new_point
         st_custom_message(f"Ubicación seleccionada: {lat:.5f}, {lon:.5f}", "success")
 
-        URL_BACKEND = st.secrets.get("BACKEND_URL", "https://appubicacion-nube.streamlit.app/analizar")
+        URL_BACKEND = st.secrets.get("BACKEND_URL", "https://appubicacion-nube/analizar.streamlit.app")
         payload = {
             "lat": lat,
             "lon": lon,
