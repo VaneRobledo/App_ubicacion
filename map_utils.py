@@ -60,3 +60,4 @@ def add_points(layer, puntos, color):
             popup=folium.Popup(popup_text, max_width=250),
             tooltip=p.get('tipo', 'Punto')
         ).add_to(layer)
+

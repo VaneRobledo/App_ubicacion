@@ -199,6 +199,23 @@ def get_tags_negocio(tipo_negocio):
 
 
 # =============== ANÁLISIS PRINCIPAL ===============
+# logica_analisis.py
+
+def procesar_ubicacion(lat, lon, tipo_negocio):
+    """
+    Esta función reemplaza al endpoint de FastAPI.
+    Recibe los datos directamente y devuelve el diccionario de resultados.
+    """
+    try:
+        # Aquí llamas a la función que ya tenías programada
+        # Asegúrate de que 'analizar_ubicacion' esté importada o definida aquí
+        resultado = analizar_ubicacion(lat, lon, tipo_negocio)
+        
+        return resultado
+    except Exception as e:
+        # Es bueno propagar el error para manejarlo en la UI
+        raise Exception(f"Error en el cálculo urbano: {str(e)}")
+
 
 def analizar_ubicacion(lat, lon, tipo_negocio):
     """Analiza una ubicación para un tipo de negocio específico."""

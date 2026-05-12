@@ -8,6 +8,7 @@ import os
 from db_utils import search_business_types
 from map_utils import add_points, create_base_map, interpretar_feature
 from ui_utils import get_svg_icon, load_local_css, st_custom_header, st_custom_message
+from service.osm_service import procesar_ubicacion
 
 st.set_page_config(layout="wide", page_icon="📍", page_title="Evaluador de Ubicación Comercial")
 load_local_css()
@@ -102,24 +103,29 @@ if map_data and map_data.get("last_clicked"):
 
     if st.session_state.last_click != new_point:
         st.session_state.last_click = new_point
-        st_custom_message(f"Ubicación seleccionada: {lat:.5f}, {lon:.5f}", "success")
+        st.success(f"Ubicación seleccionada: {lat:.5f}, {lon:.5f}")
 
-        URL_BACKEND = st.secrets.get("BACKEND_URL", "https://appubicacion-nube/analizar.streamlit.app")
         payload = {
             "lat": lat,
             "lon": lon,
             "tipo_negocio": tipo_negocio
         }
 
-        with st.spinner("Consultando datos urbanos (puede tardar unos segundos)..."):
+        with st.spinner("Consultando datos urbanos directamente..."):
             try:
-                response = requests.post(URL_BACKEND, json=payload, timeout=60)
-                if response.status_code == 200:
-                    st.session_state.resultado = response.json()
-                else:
-                    st.error("Error en API")
+                # LLAMADA DIRECTA: Ya no necesitas URL_BACKEND ni requests.post
+                resultado = procesar_ubicacion(
+                    lat=payload["lat"], 
+                    lon=payload["lon"], 
+                    tipo_negocio=payload["tipo_negocio"]
+                )
+                
+                # Guardamos el resultado en el estado de la sesión
+                st.session_state.resultado = resultado
+                st.json(resultado) # Opcional: para ver que llegó bien
+                
             except Exception as e:
-                st.error(f"Error: {e}")
+                st.error(f"Error al procesar los datos: {e}")
 
 with c2:
     if st.session_state.resultado:
