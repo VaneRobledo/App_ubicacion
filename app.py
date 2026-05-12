@@ -111,7 +111,7 @@ if map_data and map_data.get("last_clicked"):
             "tipo_negocio": tipo_negocio
         }
 
-        with st.spinner("Consultando datos urbanos directamente..."):
+        with st.spinner("Consultando datos urbanos..."):
             try:
                 # LLAMADA DIRECTA: Ya no necesitas URL_BACKEND ni requests.post
                 resultado = procesar_ubicacion(
@@ -122,7 +122,7 @@ if map_data and map_data.get("last_clicked"):
                 
                 # Guardamos el resultado en el estado de la sesión
                 st.session_state.resultado = resultado
-                st.json(resultado) # Opcional: para ver que llegó bien
+                #st.json(resultado) # Opcional: para ver que llegó bien
                 
             except Exception as e:
                 st.error(f"Error al procesar los datos: {e}")
