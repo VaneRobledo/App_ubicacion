@@ -62,7 +62,7 @@ if search_query:
                     key=f"business_{business['id']}",
                     help=f"Seleccionar {business['nombre']}",
                     use_container_width=True,
-                    type="primary" if is_selected else "secondary" # Resalte visual
+                    type="secondary" # Resalte visual
                 ):
                     st.session_state.selected_business = business["nombre"]
                     st.rerun()
