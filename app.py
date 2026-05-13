@@ -33,26 +33,47 @@ search_query = st.text_input(
     help="Busca entre más de 160 tipos de negocio disponibles"
 )
 
-if search_query != st.session_state.search_query:
-    st.session_state.search_query = search_query
-    st.rerun()
+if search_query:
+    
+    # Sincronización del estado de búsqueda
+    if search_query != st.session_state.search_query:
+        st.session_state.search_query = search_query
+        # Al cambiar la búsqueda, solemos querer resetear la selección previa
+        st.session_state.selected_business = None
+        st.rerun()
 
-businesses = search_business_types(search_query)
+    # Obtener los negocios
+    businesses = search_business_types(search_query)
 
-if businesses:
-    st.markdown(f"**Encontrados {len(businesses)} tipos de negocio:**")
-    cols = st.columns(3)
-    for i, business in enumerate(businesses[:9]):
-        col_idx = i % 3
-        with cols[col_idx]:
-            if st.button(business["nombre"].title(), key=f"btn_{business['id']}", use_container_width=True):
-                st.session_state.selected_business = business["nombre"]
-                st.rerun()
+    if businesses:
 
-    if len(businesses) > 9:
-        st_custom_message(f"Y {len(businesses) - 9} negocios más... refine su búsqueda", "info")
+        # Mostrar resultados de búsqueda
+        st.markdown(f"**Encontrados {len(businesses)} tipos de negocio:**")
+
+        cols = st.columns(3)
+        for i, business in enumerate(businesses[:9]):
+            col_idx = i % 3
+            with cols[col_idx]:
+                # Estilo visual de selección
+                is_selected = st.session_state.selected_business == business["nombre"]
+                
+                if st.button(
+                    f"{business['nombre'].title()}",
+                    key=f"business_{business['id']}",
+                    help=f"Seleccionar {business['nombre']}",
+                    use_container_width=True,
+                    type="primary" if is_selected else "secondary" # Resalte visual
+                ):
+                    st.session_state.selected_business = business["nombre"]
+                    st.rerun()
+
+        if len(businesses) > 9:
+            st.info(f"Y {len(businesses) - 9} negocios más... refine su búsqueda")
+    else:
+        st.warning("No se encontraron negocios con ese criterio.")
 else:
-    st.warning("No se encontraron negocios que coincidan con la búsqueda.")
+    # Opcional: Mensaje informativo cuando la barra está vacía
+    st.info("Escriba en el buscador para ver los negocios disponibles.")
 
 if st.session_state.selected_business:
     st_custom_message(f"Negocio seleccionado: <strong>{st.session_state.selected_business.title()}</strong>", "success")
@@ -72,25 +93,6 @@ if "resultado" not in st.session_state:
 
 mapa = create_base_map()
 
-if st.session_state.resultado:
-    data = st.session_state.resultado
-    geo = data.get("geo", {})
-
-    competencia_layer = folium.FeatureGroup(name="🔴 Competencia")
-    potenciales_clientes_layer = folium.FeatureGroup(name="🔵 potenciales_clientes")
-    sinergia_layer = folium.FeatureGroup(name="🟢 Sinergia")
-    transporte_layer = folium.FeatureGroup(name="🟡 Transporte")
-
-    add_points(competencia_layer, geo.get("competencia", []), "red")
-    add_points(potenciales_clientes_layer, geo.get("potenciales_clientes", []), "blue")
-    add_points(sinergia_layer, geo.get("sinergia", []), "green")
-    add_points(transporte_layer, geo.get("transporte", []), "orange")
-
-    competencia_layer.add_to(mapa)
-    potenciales_clientes_layer.add_to(mapa)
-    sinergia_layer.add_to(mapa)
-    transporte_layer.add_to(mapa)
-    folium.LayerControl().add_to(mapa)
 
 c1, c2 = st.columns([55, 45])
 with c1:
